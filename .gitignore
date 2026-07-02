@@ -1,3 +1,4 @@
 vclf-ddns/.venv
 vclf-ddns/config.json
 vclf-ddns/last_ip.json
+.DS_Store

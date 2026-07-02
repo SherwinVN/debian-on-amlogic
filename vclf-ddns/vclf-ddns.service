@@ -1,0 +1,14 @@
+[Unit]
+Description=vclf-ddns Dynamic DNS updater
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/vclf-ddns
+ExecStart=/opt/vclf-ddns/.venv/bin/python3 /opt/vclf-ddns/vclf_ddns.py --config /opt/vclf-ddns/config.json
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

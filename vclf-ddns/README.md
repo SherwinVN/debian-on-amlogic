@@ -1,4 +1,4 @@
-# Cloudflare DDNS Service
+# vclf-ddns (Cloudflare DDNS Service)
 
 Service Python nhỏ gọn để tự động cập nhật IP cho domain trên Cloudflare (Dynamic DNS).
 Chỉ cần khai báo **token** + **domain**, tái sử dụng cho nhiều domain cùng lúc.
@@ -12,13 +12,13 @@ Vào **Cloudflare Dashboard → My Profile → API Tokens → Create Token**, ch
 ## 2. Cài đặt trên server
 
 ```bash
-sudo mkdir -p /opt/cf-ddns
-sudo cp cloudflare_ddns.py config.example.json requirements.txt /opt/cf-ddns/
-cd /opt/cf-ddns
+sudo mkdir -p /opt/vclf-ddns
+sudo cp vclf_ddns.py config.example.json requirements.txt /opt/vclf-ddns/
+cd /opt/vclf-ddns
 sudo mv config.example.json config.json
 
-python3 -m venv venv
-./venv/bin/pip install -r requirements.txt
+python3 -m venv .venv
+./.venv/bin/pip install -r requirements.txt
 ```
 
 Sửa `config.json`:
@@ -47,7 +47,7 @@ Sửa `config.json`:
 ## 3. Chạy thử
 
 ```bash
-./venv/bin/python3 cloudflare_ddns.py --config config.json
+./.venv/bin/python3 vclf_ddns.py --config config.json
 ```
 
 Nếu `check_interval` trong config > 0, script sẽ tự chạy như daemon (lặp mãi, Ctrl+C để dừng).
@@ -58,13 +58,13 @@ Muốn ép chạy đúng 1 lần bất kể config (VD: test nhanh): thêm `--on
 ### Cách A — Daemon liên tục (khuyên dùng, kết hợp `check_interval`)
 
 ```bash
-sudo cp cf-ddns.service /etc/systemd/system/
+sudo cp vclf-ddns.service /etc/systemd/system/
 sudo systemctl daemon-reload
-sudo systemctl enable --now cf-ddns.service
+sudo systemctl enable --now vclf-ddns.service
 
 # Kiểm tra
-systemctl status cf-ddns.service
-journalctl -u cf-ddns.service -f
+systemctl status vclf-ddns.service
+journalctl -u vclf-ddns.service -f
 ```
 
 Service sẽ tự lặp kiểm tra IP theo đúng `check_interval` khai báo trong `config.json`.
@@ -76,15 +76,15 @@ Service sẽ tự lặp kiểm tra IP theo đúng `check_interval` khai báo tro
 ```bash
 crontab -e
 # Chạy mỗi 5 phút:
-*/5 * * * * /opt/cf-ddns/venv/bin/python3 /opt/cf-ddns/cloudflare_ddns.py --config /opt/cf-ddns/config.json --once >> /var/log/cf-ddns.log 2>&1
+*/5 * * * * /opt/vclf-ddns/.venv/bin/python3 /opt/vclf-ddns/vclf_ddns.py --config /opt/vclf-ddns/config.json --once >> /var/log/vclf-ddns.log 2>&1
 ```
 
-Hoặc dùng `cf-ddns.timer` đi kèm (chỉnh `ExecStart` trong `cf-ddns.service` thêm `--once`, đổi `Type=simple` thành `Type=oneshot`, bỏ `Restart=always`, rồi enable `cf-ddns.timer` thay vì `cf-ddns.service`).
+Hoặc dùng `vclf-ddns.timer` đi kèm (chỉnh `ExecStart` trong `vclf-ddns.service` thêm `--once`, đổi `Type=simple` thành `Type=oneshot`, bỏ `Restart=always`, rồi enable `vclf-ddns.timer` thay vì `vclf-ddns.service`).
 
 ## 5. Dùng lại trong code khác (import trực tiếp)
 
 ```python
-from cloudflare_ddns import CloudflareDNSUpdater
+from vclf_ddns import CloudflareDNSUpdater
 
 updater = CloudflareDNSUpdater(api_token="TOKEN_CUA_BAN")
 updater.sync(["home.example.com", "vpn.example.com"])

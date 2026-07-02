@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-cloudflare_ddns.py
+vclf_ddns.py
 -------------------
 Service cập nhật IP (Dynamic DNS) cho domain trên Cloudflare.
 
@@ -9,7 +9,7 @@ Cách dùng nhanh:
     updater.sync(["home.example.com", "vpn.example.com"])
 
 Hoặc chạy trực tiếp qua CLI:
-    python3 cloudflare_ddns.py --config config.json
+    python3 vclf_ddns.py --config config.json
 """
 
 import json
@@ -26,7 +26,7 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
-log = logging.getLogger("cf-ddns")
+log = logging.getLogger("vclf-ddns")
 
 CF_API_BASE = "https://api.cloudflare.com/client/v4"
 
