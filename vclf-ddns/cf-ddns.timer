@@ -1,0 +1,10 @@
+[Unit]
+Description=Chạy Cloudflare DDNS updater mỗi 5 phút
+
+[Timer]
+OnBootSec=30
+OnUnitActiveSec=5min
+Unit=cf-ddns.service
+
+[Install]
+WantedBy=timers.target

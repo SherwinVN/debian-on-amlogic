@@ -1,0 +1,12 @@
+{
+  "api_token": "DAN_CLOUDFLARE_API_TOKEN_CUA_BAN",
+  "domains": [
+    "home.example.com",
+    "vpn.example.com"
+  ],
+  "record_type": "A",
+  "proxied": false,
+  "ttl": 1,
+  "check_interval": 60,
+  "state_file": "last_ip.json"
+}

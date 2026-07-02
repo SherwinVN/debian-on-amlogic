@@ -1,0 +1,14 @@
+[Unit]
+Description=Cloudflare Dynamic DNS updater
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/cf-ddns
+ExecStart=/opt/cf-ddns/venv/bin/python3 /opt/cf-ddns/cloudflare_ddns.py --config /opt/cf-ddns/config.json
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
